@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SnowTam</string>
+    <string name="homeIndication">Veuillez saisir un nom d\'aeroport et valider avec la fèche pour qu\'il soit pris en compte</string>
+</resources>
