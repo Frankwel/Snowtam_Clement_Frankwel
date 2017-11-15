@@ -2,10 +2,10 @@
     <string name="app_name">SnowTam</string>
     <string name="homeIndication">Veuillez saisir un code d\'aeroport et valider avec la fèche pour qu\'il soit pris en compte.</string>
     <string name="edit_text_airpot">code aeroport</string>
-    <string name="btn_search">Rechercher</string>
+    <string name="btn_search">Analyse</string>
     <string name="empty_code">Aucune donnée saisie</string>
     <string name="message_empty_code">Merci de  saisir un code afin qu\'il soit pris en compte</string>
-    <string name="bad_code">Code erroné</string>
+    <string name="bad_code">Wrong code</string>
     <string name="message_bad_code">Veuillez saisir un code valide</string>
     <string name="max_code">limite de code</string>
     <string name="message_max_code">Vous pouvez rechercher 5 codes au maximum</string>
