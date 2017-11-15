@@ -17,7 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import fr.fyt.snowtam_clement_frankwel.R;
-import fr.fyt.snowtam_clement_frankwel.utility.ListViewAdapter;
+import fr.fyt.snowtam_clement_frankwel.model.ListViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

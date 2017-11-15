@@ -1,4 +1,4 @@
-package fr.fyt.snowtam_clement_frankwel.utility;
+package fr.fyt.snowtam_clement_frankwel.model;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
