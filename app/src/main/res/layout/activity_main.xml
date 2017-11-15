@@ -31,14 +31,6 @@
             android:layout_marginRight="20dp"
             android:text="@string/homeIndication" />
 
-        <ListView
-            android:id="@+id/codeListView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="20dp" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,9 +59,17 @@
                 android:layout_alignRight="@+id/editTextCode"
                 android:layout_alignTop="@+id/editTextCode"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
+                app:srcCompat="@drawable/ic_arrow_downward_black_24dp" />
 
         </RelativeLayout>
+
+        <ListView
+            android:id="@+id/codeListView"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp" />
 
         <Button
             android:id="@+id/btnSearch"
