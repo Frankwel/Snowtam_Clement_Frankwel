@@ -1,13 +1,11 @@
-package fr.fyt.snowtam_clement_frankwel;
+package fr.fyt.snowtam_clement_frankwel.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +15,9 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
+
+import fr.fyt.snowtam_clement_frankwel.R;
+import fr.fyt.snowtam_clement_frankwel.utility.ListViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,14 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ibValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editTextCode.getText().toString().isEmpty()){
-                    new MaterialDialog.Builder(MainActivity.this)
-                            .title(getString(R.string.empty_code))
-                            .content(getString(R.string.message_empty_code))
-                            .positiveText(getString(R.string.ok))
-                            .show();
-                }
-                else if(editTextCode.getText().toString().length()<4){
+                if(editTextCode.getText().toString().length()!=4){
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(getString(R.string.bad_code))
                             .content(getString(R.string.message_bad_code))
