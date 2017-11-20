@@ -11,5 +11,6 @@
     <string name="max_code">limite de code</string>
     <string name="message_max_code">Vous pouvez rechercher 5 codes au maximum</string>
     <string name="ok">OK</string>
-    <string name="btn_view_map">Voir map</string>
+    <string name="btn_view_map">Voir la map</string>
+    <string name="section_format">Code: %1$d</string>
 </resources>

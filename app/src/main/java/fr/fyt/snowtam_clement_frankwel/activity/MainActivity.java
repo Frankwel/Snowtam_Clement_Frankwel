@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+                Gson gson = new Gson();
+                String jsonCodes = gson.toJson(codeList);
+
+                //send the list of codes to DecodingActivity
+                intent.putExtra("codeList", jsonCodes);
+
                 startActivity(intent);
             }
         });
