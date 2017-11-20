@@ -1,5 +1,6 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
+import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
 /**
  * Created by frank on 14/11/2017.
@@ -28,8 +31,9 @@ import fr.fyt.snowtam_clement_frankwel.R;
 public class DecodingActivity extends AppCompatActivity {
 
     ViewPager viewPager;
+    static Button btnViewMap;
     SectionsPagerAdapter mSectionsPagerAdapter;
-    static List<String> codeList = new ArrayList<String>();
+    static List<Snowtam> snowtamList = new ArrayList<Snowtam>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,8 @@ public class DecodingActivity extends AppCompatActivity {
 
         //getting the list of code
         Gson gson = new Gson();
-        Type type = new TypeToken<List<String>>(){}.getType();
-        codeList = gson.fromJson((String)getIntent().getSerializableExtra("codeList"), type);
+        Type type = new TypeToken<List<Snowtam>>(){}.getType();
+        snowtamList = gson.fromJson((String)getIntent().getSerializableExtra("allSnowtam"), type);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -49,7 +53,6 @@ public class DecodingActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(mSectionsPagerAdapter);
     }
-
 
     /**
      * A placeholder fragment containing a simple view.
@@ -76,16 +79,29 @@ public class DecodingActivity extends AppCompatActivity {
             return fragment;
         }
 
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_code, container, false);
+
             TextView tvCode = (TextView) rootView.findViewById(R.id.fvcTViewCode);
-            tvCode.setText(DecodingActivity.codeList.get(getArguments().getInt(ARG_SECTION_NUMBER)));
+            tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
+
+            TextView tvInformation = (TextView)rootView.findViewById(R.id.fvcTVInformations);
+            tvInformation.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getResult());
 
             TextView tvIndicator = (TextView)rootView.findViewById(R.id.fd_tv_indicator);
-            tvIndicator.setText(getArguments().getInt(ARG_SECTION_NUMBER)+1 + " / " + DecodingActivity.codeList.size());
+            tvIndicator.setText(getArguments().getInt(ARG_SECTION_NUMBER)+1 + " / " + DecodingActivity.snowtamList.size());
+
+            DecodingActivity.btnViewMap = (Button)rootView.findViewById(R.id.fvcBtnViewMap);
+            //action for the button to view map
+            btnViewMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getContext(), MapActivity.class);
+                    startActivity(i);
+                }
+            });
 
             return rootView;
         }
@@ -112,7 +128,7 @@ public class DecodingActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // return the number of code
-            return DecodingActivity.codeList.size();
+            return DecodingActivity.snowtamList.size();
         }
     }
 }

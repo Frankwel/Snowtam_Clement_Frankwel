@@ -1,6 +1,9 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +19,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.ListViewAdapter;
+import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
+/**
+ * usefull link: https://www.icao.int/safety/Pages/default.aspx
+ */
 public class MainActivity extends AppCompatActivity {
 
     ListView codeListView;
@@ -29,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     ListViewAdapter adapter;
     ArrayList<String> codeList;
+
+    ArrayList<Snowtam> allSnowtam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         codeListView = (ListView)findViewById(R.id.codeListView);
 
         codeList = new ArrayList<String>();
+        allSnowtam = new ArrayList<Snowtam>();
 
         btnSearch.setVisibility(View.INVISIBLE); //make btnSearch unusable while codeList is empty
 
@@ -78,15 +89,23 @@ public class MainActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+                if(internetAvailable()){
+                    ArrayList<String> queryResponse = new ArrayList<>();
+                    for(int i=0; i<codeList.size(); i++){
+                        queryResponse.add(getSnowtam(codeList.get(i)));
+                    }
+                    allSnowtam = decodingSnowtam(queryResponse);
 
-                Gson gson = new Gson();
-                String jsonCodes = gson.toJson(codeList);
+                    Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
 
-                //send the list of codes to DecodingActivity
-                intent.putExtra("codeList", jsonCodes);
+                    Gson gson = new Gson();
+                    String jsonSnowtam = gson.toJson(allSnowtam);
 
-                startActivity(intent);
+                    //send the list of codes to DecodingActivity
+                    intent.putExtra("allSnowtam", jsonSnowtam);
+
+                    startActivity(intent);
+                }
             }
         });
 
@@ -116,4 +135,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private ArrayList<Snowtam> decodingSnowtam(List<String> snowtamList){
+        ArrayList<Snowtam> listToReturn = new ArrayList<>();
+
+        Snowtam snowtam;
+        for(int i=0; i<snowtamList.size(); i++){
+            snowtam = new Snowtam(codeList.get(i), snowtamList.get(i), "valeur décodée");
+            listToReturn.add(snowtam);
+        }
+        return listToReturn;
+    }
+
+    /**
+     * this function make query to find snowtam online
+     * @param code
+     * @return string of snowtam corresponding
+     */
+    private String getSnowtam(String code){
+        String snowtam = "ERROR";
+
+            //faire le code pour recupérer un snowtam en ligne à partir du code en paramètre
+
+        snowtam = "code retrouvé";
+        return snowtam;
+    }
+
+    /**
+     * This function look for internet connexion to make query online after
+     * @return a boolean
+     */
+    private boolean internetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
 }

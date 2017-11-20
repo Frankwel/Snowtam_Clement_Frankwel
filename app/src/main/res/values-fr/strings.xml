@@ -12,5 +12,7 @@
     <string name="message_max_code">Vous pouvez rechercher 5 codes au maximum</string>
     <string name="ok">OK</string>
     <string name="btn_view_map">Voir la map</string>
+    <string name="btn_view_code">Voir le code</string>
     <string name="section_format">Code: %1$d</string>
+    <string name="progress_query_snowtam">Recherche des snowtams en cours</string>
 </resources>
