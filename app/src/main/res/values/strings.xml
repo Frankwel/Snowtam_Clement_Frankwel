@@ -24,15 +24,17 @@
     <string name="separator_h">H\\) </string>
     <string name="separator_n">N\\) </string>
     <string name="separator_t">T\\) </string>
-    <string name="location">Location: </string>
-    <string name="time">Time: </string>
-    <string name="runway">Runway: </string>
-    <string name="runway_lenght">Runway lenght: </string>
-    <string name="runway_width">Runway width: </string>
-    <string name="deposit_depth">Deposit depth: </string>
-    <string name="mean_depth">Mean depth: </string>
-    <string name="bracking_action">Breaking action: </string>
-    <string name="taxiway">Taxiway: </string>
-    <string name="remark">Remarque: </string>
+    <string name="location">Location : </string>
+    <string name="time">Time : </string>
+    <string name="runway">Runway : </string>
+    <string name="runway_lenght">Runway lenght : </string>
+    <string name="runway_width">Runway width : </string>
+    <string name="deposit_depth">Deposit depth : </string>
+    <string name="mean_depth">Mean depth : </string>
+    <string name="bracking_action">Breaking action : </string>
+    <string name="taxiway">Taxiway : </string>
+    <string name="remark">Remarque : </string>
     <string name="error_format_date">Error format date </string>
+    <string name="error">Error </string>
+    <string name="runway_unit">meters </string>
 </resources>

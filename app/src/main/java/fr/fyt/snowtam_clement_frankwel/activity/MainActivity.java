@@ -190,37 +190,37 @@ public class MainActivity extends AppCompatActivity {
                         case "C":
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()-1) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             break;
                         case "D":
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()-1) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             break;
                         case "E":
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()-1) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             break;
                         case "F":
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + converter.convertCondition(elements[k+1].substring(0, elements[k+1].length()-1).trim()) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + converter.convertCondition(elements[k+1].substring(0, elements[k+1].length()).trim()) + "\n");
                             }
                             break;
                         case "G":
@@ -235,10 +235,10 @@ public class MainActivity extends AppCompatActivity {
                         case "H":
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + converter.convertBreakingAction(elements[k+1].substring(0, elements[k+1].length()-1).trim()) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + converter.convertBreakingAction(elements[k+1].substring(0, elements[k+1].length()).trim()) + "\n");
                             }
                             break;
                         case "N":

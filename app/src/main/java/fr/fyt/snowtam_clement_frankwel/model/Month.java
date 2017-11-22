@@ -27,6 +27,16 @@ public enum Month {
         this.code = code;
     }
 
+    public static String getTheLabel(String code){
+        String theValue = "ERROR";
+        for (Month month : values()) {
+            if (month.code.equalsIgnoreCase(code)) {
+                theValue = month.getLabel();
+            }
+        }
+        return theValue;
+    }
+
     public static Month valueOfByCode(final String code) {
 
         for (Month month : values()) {

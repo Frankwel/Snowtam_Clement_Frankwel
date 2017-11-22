@@ -79,7 +79,7 @@ T) CONTAMINATION/100/100/100/PERCENT"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </android.support.v7.widget.CardView>
 
         <TextView
