@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
+import fr.fyt.snowtam_clement_frankwel.model.Converter;
+import fr.fyt.snowtam_clement_frankwel.model.Information;
 import fr.fyt.snowtam_clement_frankwel.model.ListViewAdapter;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    codeList.add(editTextCode.getText().toString());
+                    codeList.add(editTextCode.getText().toString().toUpperCase());
                     editTextCode.setText(""); //set the edittextCode empty
                     adapter = new ListViewAdapter(MainActivity.this, android.R.layout.simple_list_item_1, codeList);
                     codeListView.setAdapter(adapter);
@@ -92,7 +94,14 @@ public class MainActivity extends AppCompatActivity {
                 if(internetAvailable()){
                     ArrayList<String> queryResponse = new ArrayList<>();
                     for(int i=0; i<codeList.size(); i++){
-                        queryResponse.add(getSnowtam(codeList.get(i)));
+                        //queryResponse.add(getSnowtam(codeList.get(i)));
+                        queryResponse.add("SNOWTAM 0311\n" +
+                                "A) ENSB\n" +
+                                "B) 10130958 C) 10\n" +
+                                "F) 7/7/7 G) XX/XX/XX H) 4/4/3\n" +
+                                "N) ALL REPORTED TWYS/2\n" +
+                                "R) ALL REPORTED APRONS/2\n" +
+                                "T) CONTAMINATION/100/100/100/PERCENT");
                     }
                     allSnowtam = decodingSnowtam(queryResponse);
 
@@ -113,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-
                 final String item = (String)parent.getItemAtPosition(position);
                 view.animate().setDuration(500).alpha(0).withEndAction(new Runnable() {
                     @Override
@@ -137,12 +145,123 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * this function is used to decode snowtam
+     */
     private ArrayList<Snowtam> decodingSnowtam(List<String> snowtamList){
         ArrayList<Snowtam> listToReturn = new ArrayList<>();
 
-        Snowtam snowtam;
+        Snowtam snowtam = new Snowtam();
+        Converter converter = new Converter();
+
         for(int i=0; i<snowtamList.size(); i++){
-            snowtam = new Snowtam(codeList.get(i), snowtamList.get(i), "valeur décodée");
+            //snowtam.setKey(codeList.get(i));
+            snowtam.setCode(snowtamList.get(i));
+            snowtam.setResult("");
+
+            String lines[] = snowtamList.get(i).split("\n");
+            for (int j=0; j<lines.length; j++){
+                String elements[] = lines[j].split("\\)");
+                for(int k=0; k<elements.length-1; k++){
+                    //take the last char of elements[k] and look for
+                    String separator = elements[k].substring(elements[k].length() - 1);
+                    switch (separator)
+                    {
+                        case "A":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                                snowtam.setKey(elements[k+1].substring(0, elements[k+1].length()-1));
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setKey(elements[k+1].substring(0, elements[k+1].length()));
+                            }
+                            break;
+                        case "B":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.time) + converter.convertTime(elements[k+1].substring(0, elements[k+1].length()-1).trim()) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.time) + converter.convertTime(elements[k+1].substring(0, elements[k+1].length()).trim()) + "\n");
+                            }
+                            break;
+                        case "C":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "D":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_lenght) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "E":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway_width) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "F":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.deposit_depth) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "G":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.mean_depth) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.mean_depth) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "H":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "N":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.taxiway) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.taxiway) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                        case "T":
+                            //test if the before last char is a blank space
+                            if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.remark) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
+                            }
+                            else {
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.remark) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                            }
+                            break;
+                    }
+                }
+            }
             listToReturn.add(snowtam);
         }
         return listToReturn;
