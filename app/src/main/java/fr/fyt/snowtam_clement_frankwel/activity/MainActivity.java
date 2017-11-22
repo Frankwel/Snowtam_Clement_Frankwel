@@ -1,9 +1,7 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +21,15 @@ import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.Converter;
-import fr.fyt.snowtam_clement_frankwel.model.Information;
 import fr.fyt.snowtam_clement_frankwel.model.ListViewAdapter;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 /**
  * usefull link: https://www.icao.int/safety/Pages/default.aspx
@@ -270,15 +274,35 @@ public class MainActivity extends AppCompatActivity {
     /**
      * this function make query to find snowtam online
      * @param code
-     * @return string of snowtam corresponding
+     * @return snowTam code
      */
+    //TODO Mettre le string result dans le string snowTam
     private String getSnowtam(String code){
-        String snowtam = "ERROR";
+        String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations="+code+"&qstring=&states=&ICAOonly=";
+        final String snowTam = "";
 
-            //faire le code pour recupérer un snowtam en ligne à partir du code en paramètre
+        final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
-        snowtam = "code retrouvé";
-        return snowtam;
+        StringRequest stgRq = new StringRequest(Request.Method.GET, url,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
+                        rqtRq.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String result = "Something went wrong...";
+                error.printStackTrace();
+                rqtRq.stop();
+            }
+        });
+        rqtRq.add(stgRq);
+
+
+        return snowTam;
     }
 
     /**
