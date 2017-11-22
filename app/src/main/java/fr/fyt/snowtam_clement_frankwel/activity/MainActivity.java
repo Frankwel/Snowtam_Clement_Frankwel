@@ -23,7 +23,6 @@ import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.Converter;
-import fr.fyt.snowtam_clement_frankwel.model.Information;
 import fr.fyt.snowtam_clement_frankwel.model.ListViewAdapter;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
