@@ -6,17 +6,17 @@ package fr.fyt.snowtam_clement_frankwel.model;
 
 public enum Condition {
 
-    CLEAR_AND_DRY(" Clear and dry ", "0"), //
-    DAMP(" Damp ", "1"), //
-    WET_OR_WATER_PATCHES(" Wet or water patches ", "2"), //
-    RIME_OR_FROST_COVERED(" Rime or frost covered ", "3"), //
-    DRY_SNOW(" Dry snow ", "4"), //
-    WET_SNOW(" Wet snow ", "5"), //
-    SLUSH(" Slush ", "6"), //
-    ICE(" Ice ", "7"), //
-    COMPACTED_OR_ROLLED_SNOW(" Compacted or rolled snow ", "8"), //
-    FROZEN_RUTS_OR_RIDGES(" Frozen ruts or ridges ", "9"),
-    NC(" NC ", "1000");
+    CLEAR_AND_DRY(" Clear and dry", "0"), //
+    DAMP(" Damp", "1"), //
+    WET_OR_WATER_PATCHES(" Wet or water patches", "2"), //
+    RIME_OR_FROST_COVERED(" Rime or frost covered", "3"), //
+    DRY_SNOW(" Dry snow", "4"), //
+    WET_SNOW(" Wet snow", "5"), //
+    SLUSH(" Slush", "6"), //
+    ICE(" Ice", "7"), //
+    COMPACTED_OR_ROLLED_SNOW(" Compacted or rolled snow", "8"), //
+    FROZEN_RUTS_OR_RIDGES(" Frozen ruts or ridges", "9"),
+    NC(" NC", "1000");
 
     private final String label;
     private final String code;

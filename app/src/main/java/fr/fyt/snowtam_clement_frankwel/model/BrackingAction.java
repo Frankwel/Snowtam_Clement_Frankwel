@@ -7,25 +7,25 @@ package fr.fyt.snowtam_clement_frankwel.model;
 public enum BrackingAction {
 
     POOR(" Poor ", "1"), //
-    MEDIUM_TO_POOR(" Medium to poor ", "2"), //
-    MEDIUM(" Medium ", "3"), //
-    MEDIUM_TO_GOOD(" Medium to good ", "4"), //
-    GOOD(" Good ", "5"), //
-    POOR_DOUBLE(" Poor ", "6"), //
-    MEDIUM_TO_POOR_DOUBLE(" Medium to poor ", "26"), //
-    MEDIUM_DOUBLE(" Medium ", "30"), //
-    MEDIUM_TO_GOOD_DOUBLE(" Medium to good ", "36"), //
-    GOOD_DOUBLE(" Good ", "40"),
-    BRD(" Brakemeter-Dynometer ", "BRD"),
-    GRT(" Grip tester ", "GRT"),
-    MUM(" Mu-meter ", "MUM"),
-    RFT(" Runway friction tester ", "RFT"),
-    SFH(" Surface friction tester (high-pressure tire) ", "SFH"),
-    SFL(" Surface friction tester (low-pressure tire) ", "SFL"),
-    SKH(" Skiddometer (high-pressure tire) ", "SKH"),
-    SKL(" Skiddometer (low-pressure tire) ", "SKL"),
-    TAP(" Tapley meter ", "TAP"),
-    NC(" NC ", "9");
+    MEDIUM_TO_POOR(" Medium to poor", "2"), //
+    MEDIUM(" Medium", "3"), //
+    MEDIUM_TO_GOOD(" Medium to good", "4"), //
+    GOOD(" Good", "5"), //
+    POOR_DOUBLE(" Poor", "6"), //
+    MEDIUM_TO_POOR_DOUBLE(" Medium to poor", "26"), //
+    MEDIUM_DOUBLE(" Medium", "30"), //
+    MEDIUM_TO_GOOD_DOUBLE(" Medium to good", "36"), //
+    GOOD_DOUBLE(" Good", "40"),
+    BRD(" Brakemeter-Dynometer", "BRD"),
+    GRT(" Grip tester", "GRT"),
+    MUM(" Mu-meter", "MUM"),
+    RFT(" Runway friction tester", "RFT"),
+    SFH(" Surface friction tester (high-pressure tire)", "SFH"),
+    SFL(" Surface friction tester (low-pressure tire)", "SFL"),
+    SKH(" Skiddometer (high-pressure tire)", "SKH"),
+    SKL(" Skiddometer (low-pressure tire)", "SKL"),
+    TAP(" Tapley meter", "TAP"),
+    NC(" NC", "9");
 
     private final String label;
     private final String code;
