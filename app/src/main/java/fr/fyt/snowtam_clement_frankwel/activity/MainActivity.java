@@ -98,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 if(internetAvailable()){
                     ArrayList<String> queryResponse = new ArrayList<>();
                     for(int i=0; i<codeList.size(); i++){
-                        //queryResponse.add(getSnowtam(codeList.get(i)));
-                        queryResponse.add("SNOWTAM 0311\n" +
+                        queryResponse.add(getSnowtam(codeList.get(i)));
+                        /*queryResponse.add("SNOWTAM 0311\n" +
                                 "A) ENSB\n" +
                                 "B) 10130958 C) 10\n" +
                                 "F) 7/7/7 G) XX/XX/XX H) 4/4/3\n" +
                                 "N) ALL REPORTED TWYS/2\n" +
                                 "R) ALL REPORTED APRONS/2\n" +
-                                "T) CONTAMINATION/100/100/100/PERCENT");
+                                "T) CONTAMINATION/100/100/100/PERCENT");*/
                     }
                     allSnowtam = decodingSnowtam(queryResponse);
 
