@@ -276,10 +276,9 @@ public class MainActivity extends AppCompatActivity {
      * @param code
      * @return snowTam code
      */
-    //TODO Mettre le string result dans le string snowTam
     private String getSnowtam(String code){
         String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations="+code+"&qstring=&states=&ICAOonly=";
-        final String snowTam = "";
+        String snowTam;
 
         final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
@@ -299,14 +298,14 @@ public class MainActivity extends AppCompatActivity {
                 rqtRq.stop();
             }
         });
+        snowTam = stgRq.toString();
         rqtRq.add(stgRq);
-
 
         return snowTam;
     }
 
     /**
-     * This function look for internet connexion to make query online after
+     * This function look for internet connexion
      * @return a boolean
      */
     private boolean internetAvailable() {
