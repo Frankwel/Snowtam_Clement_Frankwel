@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> codeList;
 
     ArrayList<Snowtam> allSnowtam;
+    ArrayList<String> queryResponse = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,17 +98,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(internetAvailable()){
-                    ArrayList<String> queryResponse = new ArrayList<>();
+
                     for(int i=0; i<codeList.size(); i++){
-                        queryResponse.add(getSnowtam(codeList.get(i)));
-                        /*queryResponse.add("SNOWTAM 0311\n" +
-                                "A) ENSB\n" +
-                                "B) 10130958 C) 10\n" +
-                                "F) 7/7/7 G) XX/XX/XX H) 4/4/3\n" +
-                                "N) ALL REPORTED TWYS/2\n" +
-                                "R) ALL REPORTED APRONS/2\n" +
-                                "T) CONTAMINATION/100/100/100/PERCENT");*/
+                        getSnowtam(codeList.get(i));
                     }
+                    //TODO PRBLM IL N'A PAS LE TEMPS DE R2CUPERER LA REPONSE DE LA REQUETE HTTP DONC PAS DE SNOWTAM EN RETOUR
+                    // TODO IL FAUT REUSSIR A FAIRE ATTENDRE LE PRGM POUR QUE LA METHODE GETSNOWTAM SE REALISE CORRECTEMENT
+                    Log.i("QUERYRESPONSEeeeeeeeeee", queryResponse.get(queryResponse.size()-1));
+
                     allSnowtam = decodingSnowtam(queryResponse);
 
                     Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
 
@@ -276,9 +274,8 @@ public class MainActivity extends AppCompatActivity {
      * @param code
      * @return snowTam code
      */
-    private String getSnowtam(String code){
+    private void getSnowtam(String code){
         String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations="+code+"&qstring=&states=&ICAOonly=";
-        String snowTam;
 
         final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
@@ -287,21 +284,33 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
-                        rqtRq.stop();
+                        Log.i("TETSTSTETETSTSTE", "SNOWSNSOSNSONSONS");
+                        if(response.contains("SNOWTAM")){
+                            String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
+                            Log.i("resultatatatata", result);
+                            sendSnowTam(result);
+                            rqtRq.stop();
+                        }else{
+                           final String result = "NoSnowTam";
+                            sendSnowTam(result);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 String result = "Something went wrong...";
+                sendSnowTam(result);
                 error.printStackTrace();
                 rqtRq.stop();
             }
         });
-        snowTam = stgRq.toString();
         rqtRq.add(stgRq);
+    }
 
-        return snowTam;
+    private void sendSnowTam(String result) {
+        Log.i("RESULT", result);
+        queryResponse.add(result);
+        Log.i("QUERYRESPONSE", queryResponse.get(queryResponse.size()-1));
     }
 
     /**
