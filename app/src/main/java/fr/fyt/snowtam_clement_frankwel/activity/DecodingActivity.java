@@ -111,6 +111,13 @@ public class DecodingActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent i = new Intent(getContext(), MapsActivity.class);
                     i.putExtra("code", snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
+
+                    Gson gson = new Gson();
+                    String jsonSnowtam = gson.toJson(snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)));
+
+                    //send the list of codes to DecodingActivity
+                    i.putExtra("snowtam", jsonSnowtam);
+
                     startActivity(i);
                 }
             });

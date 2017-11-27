@@ -17,8 +17,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
+import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
 import static java.lang.Double.parseDouble;
 
@@ -31,6 +37,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lat;
     private double lng;
 
+    private Snowtam snowtam;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +50,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Bundle extras = getIntent().getExtras();
         code = (String)getIntent().getSerializableExtra("code");
+        //getting the list of code
+        Gson gson = new Gson();
+        Type type = new TypeToken<Snowtam>(){}.getType();
+        snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
+
         txt = (TextView)findViewById(R.id.mapTViewCode);
 
     }
@@ -61,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         getGeoPosition();
-        LatLng airport = new LatLng(60.29183, 5.2220173);
+        LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
         mMap.addMarker(new MarkerOptions().position(airport).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
     }

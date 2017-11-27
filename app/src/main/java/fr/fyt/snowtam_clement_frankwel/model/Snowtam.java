@@ -9,6 +9,8 @@ public class Snowtam {
     String key;
     String code;
     String result;
+    double lat;
+    double lng;
 
     //Constructor without argument
     public Snowtam() {
@@ -22,6 +24,8 @@ public class Snowtam {
         this.key = key;
         this.code = code;
         this.result = result;
+        this.lat = 0;
+        this.lng = 0;
     }
 
     //getters and setters
@@ -47,5 +51,21 @@ public class Snowtam {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

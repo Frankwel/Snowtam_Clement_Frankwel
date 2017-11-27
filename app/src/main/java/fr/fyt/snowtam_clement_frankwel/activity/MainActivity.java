@@ -35,6 +35,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import static java.lang.Double.parseDouble;
+
 /**
  * usefull link: https://www.icao.int/safety/Pages/default.aspx
  */
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     ListViewAdapter adapter;
     ArrayList<String> codeList;
 
-    ArrayList<Snowtam> allSnowtam;
     ArrayList<String> queryResponse;
 
     CountDownTimer timer;
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         codeListView = (ListView)findViewById(R.id.codeListView);
 
         codeList = new ArrayList<String>();
-        allSnowtam = new ArrayList<Snowtam>();
         queryResponse = new ArrayList<String>();
 
         btnSearch.setVisibility(View.INVISIBLE); //make btnSearch unusable while codeList is empty
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                             .positiveText(getString(R.string.ok))
                             .show();
                 }
-                else if(codeList.contains(editTextCode.getText().toString().trim().toLowerCase())){
+                else if(codeList.contains(editTextCode.getText().toString().trim().toUpperCase())){
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(getString(R.string.existed_code))
                             .content(getString(R.string.message_existed_code))
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    codeList.add(editTextCode.getText().toString().toUpperCase());
+                    codeList.add(editTextCode.getText().toString().trim().toUpperCase());
                     editTextCode.setText(""); //set the edittextCode empty
                     adapter = new ListViewAdapter(MainActivity.this, android.R.layout.simple_list_item_1, codeList);
                     codeListView.setAdapter(adapter);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()-3) + "\n");
                             }
                             break;
                         case "B":
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()-1) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()) + " " + getString(R.string.runway_unit) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.runway) + elements[k+1].substring(0, elements[k+1].length()-3) + " " + getString(R.string.runway_unit) + "\n");
                             }
                             break;
                         case "D":
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + converter.convertBreakingAction(elements[k+1].substring(0, elements[k+1].length()-1).trim()) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + converter.convertBreakingAction(elements[k+1].substring(0, elements[k+1].length()).trim()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.bracking_action) + converter.convertBreakingAction(elements[k+1].substring(0, elements[k+1].length()-3).trim()) + "\n");
                             }
                             break;
                         case "N":
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.taxiway) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
                             }
                             else {
-                                snowtam.setResult(snowtam.getResult() + getString(R.string.taxiway) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
+                                snowtam.setResult(snowtam.getResult() + getString(R.string.taxiway) + elements[k+1].substring(0, elements[k+1].length()-3) + "\n");
                             }
                             break;
                         case "T":
@@ -258,28 +258,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void sendSnowTam(String result) {
-        Log.i("RESULT", result);
-        queryResponse.add(result);
-        Log.i("QUERYRESPONSE", queryResponse.get(queryResponse.size()-1));
-    }
-
-    //method used to set timer
-    private void beginTimer(){
-        timer = new CountDownTimer(5000, 1000)
-        {
-            @Override
-            public void onTick(long l) {
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-    }
-
     /**
      * This function look for internet connexion
      * @return a boolean
@@ -290,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class Loading extends AsyncTask<Void, Integer, Void> {
+    public class Loading extends AsyncTask<Void, Integer, Void> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -302,23 +280,20 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.show(); // Display Progress Dialog
 
         }
-
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
-
         @Override
         protected Void doInBackground(Void... arg0) {
             if(internetAvailable()) {
+                final ArrayList<Snowtam> allSnowtam = new ArrayList<>();
                 for (int i = 0; i < codeList.size(); i++) {
                     String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations=" + codeList.get(i) + "&qstring=&states=&ICAOonly=";
-
-                    final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
                     final int finalI = i;
-                    StringRequest stgRq = new StringRequest(Request.Method.GET, url,
-
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -326,9 +301,9 @@ public class MainActivity extends AppCompatActivity {
                                     if (response.contains("SNOWTAM")) {
                                         String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
                                         Log.i("resultatatatata", result);
-                                        allSnowtam.add(decodingSnowtam(codeList.get(finalI), result));
+                                        Snowtam snowtam = decodingSnowtam(codeList.get(finalI), result);
+                                        allSnowtam.add(snowtam);
 
-                                        rqtRq.stop();
                                         if(finalI == codeList.size()-1){
                                             progressDialog.cancel();
                                             Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
@@ -342,24 +317,42 @@ public class MainActivity extends AppCompatActivity {
                                             startActivity(intent);
                                         }
                                     } else {
-                                        final String result = "NoSnowTam";
-                                        sendSnowTam(result);
+                                        allSnowtam.add(new Snowtam(codeList.get(finalI), "Pas de Snowtam", "L'aeroport " + codeList.get(finalI) + " ne possède pas de snowtam en cette période de l'année"));
+                                        if(finalI == codeList.size()-1){
+                                            progressDialog.cancel();
+                                            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+                                            Gson gson = new Gson();
+                                            String jsonSnowtam = gson.toJson(allSnowtam);
+
+                                            //send the list of codes to DecodingActivity
+                                            intent.putExtra("allSnowtam", jsonSnowtam);
+
+                                            startActivity(intent);
+                                        }
                                     }
                                 }
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            String result = "Something went wrong...";
-                            sendSnowTam(result);
-                            error.printStackTrace();
-                            rqtRq.stop();
+                            allSnowtam.add(new Snowtam(codeList.get(finalI), "Pas de Snowtam", "L'aeroport " + codeList.get(finalI) + " ne possède pas de snowtam en cette période de l'année"));
+                            if(finalI == codeList.size()-1){
+                                progressDialog.cancel();
+                                Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+                                Gson gson = new Gson();
+                                String jsonSnowtam = gson.toJson(allSnowtam);
+
+                                //send the list of codes to DecodingActivity
+                                intent.putExtra("allSnowtam", jsonSnowtam);
+
+                                startActivity(intent);
+                            }
                         }
                     });
-                    rqtRq.add(stgRq);
+                    queue.add(stringRequest);
                 }
             }
-
-
             return null;
         }
 
