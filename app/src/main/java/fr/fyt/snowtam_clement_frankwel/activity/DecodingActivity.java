@@ -84,6 +84,9 @@ public class DecodingActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_code, container, false);
 
+            TextView tvSnowtam = (TextView)rootView.findViewById(R.id.fvcTVSnowtam);
+            tvSnowtam.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getCode());
+
             TextView tvCode = (TextView) rootView.findViewById(R.id.fvcTViewCode);
             tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
 

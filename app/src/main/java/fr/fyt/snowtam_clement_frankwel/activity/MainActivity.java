@@ -1,8 +1,11 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> codeList;
 
     ArrayList<Snowtam> allSnowtam;
-    ArrayList<String> queryResponse = new ArrayList<>();
+    ArrayList<String> queryResponse;
+
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         codeList = new ArrayList<String>();
         allSnowtam = new ArrayList<Snowtam>();
+        queryResponse = new ArrayList<String>();
 
         btnSearch.setVisibility(View.INVISIBLE); //make btnSearch unusable while codeList is empty
 
@@ -70,10 +76,17 @@ public class MainActivity extends AppCompatActivity {
         ibValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editTextCode.getText().toString().length()!=4){
+                if(editTextCode.getText().toString().trim().length()!=4){
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(getString(R.string.bad_code))
                             .content(getString(R.string.message_bad_code))
+                            .positiveText(getString(R.string.ok))
+                            .show();
+                }
+                else if(codeList.contains(editTextCode.getText().toString().trim().toLowerCase())){
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .title(getString(R.string.existed_code))
+                            .content(getString(R.string.message_existed_code))
                             .positiveText(getString(R.string.ok))
                             .show();
                 }
@@ -97,27 +110,8 @@ public class MainActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(internetAvailable()){
-
-                    for(int i=0; i<codeList.size(); i++){
-                        getSnowtam(codeList.get(i));
-                    }
-                    //TODO PRBLM IL N'A PAS LE TEMPS DE R2CUPERER LA REPONSE DE LA REQUETE HTTP DONC PAS DE SNOWTAM EN RETOUR
-                    // TODO IL FAUT REUSSIR A FAIRE ATTENDRE LE PRGM POUR QUE LA METHODE GETSNOWTAM SE REALISE CORRECTEMENT
-                    Log.i("QUERYRESPONSEeeeeeeeeee", queryResponse.get(queryResponse.size()-1));
-
-                    allSnowtam = decodingSnowtam(queryResponse);
-
-                    Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
-
-                    Gson gson = new Gson();
-                    String jsonSnowtam = gson.toJson(allSnowtam);
-
-                    //send the list of codes to DecodingActivity
-                    intent.putExtra("allSnowtam", jsonSnowtam);
-
-                    startActivity(intent);
-                }
+                Loading loading = new Loading();
+                loading.execute();
             }
         });
 
@@ -313,6 +307,22 @@ public class MainActivity extends AppCompatActivity {
         Log.i("QUERYRESPONSE", queryResponse.get(queryResponse.size()-1));
     }
 
+    //method used to set timer
+    private void beginTimer(){
+        timer = new CountDownTimer(5000, 1000)
+        {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+    }
+
     /**
      * This function look for internet connexion
      * @return a boolean
@@ -320,6 +330,67 @@ public class MainActivity extends AppCompatActivity {
     private boolean internetAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+
+    private class Loading extends AsyncTask<Void, Integer, Void> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Recherche des snowtams en cours ..."); // Setting Message
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialog.setCancelable(false);
+            progressDialog.show(); // Display Progress Dialog
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            if(internetAvailable()){
+
+                for(int i=0; i<codeList.size(); i++){
+                    getSnowtam(codeList.get(i));
+                }
+                //TODO PRBLM IL N'A PAS LE TEMPS DE R2CUPERER LA REPONSE DE LA REQUETE HTTP DONC PAS DE SNOWTAM EN RETOUR
+                // TODO IL FAUT REUSSIR A FAIRE ATTENDRE LE PRGM POUR QUE LA METHODE GETSNOWTAM SE REALISE CORRECTEMENT
+//                Log.i("QUERYRESPONSEeeeeeeeeee", queryResponse.get(queryResponse.size()-1));
+
+                allSnowtam = decodingSnowtam(queryResponse);
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+/*
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+*/
+            progressDialog.cancel();
+            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+            Gson gson = new Gson();
+            String jsonSnowtam = gson.toJson(allSnowtam);
+
+            //send the list of codes to DecodingActivity
+            intent.putExtra("allSnowtam", jsonSnowtam);
+
+            startActivity(intent);
+
+        }
     }
 
 }

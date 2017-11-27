@@ -34,13 +34,6 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="SNOWTAM 0311
-A) ENSB
-B) 10130958 C) 10
-F) 7/7/7 G) XX/XX/XX H) 4/4/3
-N) ALL REPORTED TWYS/2
-R) ALL REPORTED APRONS/2
-T) CONTAMINATION/100/100/100/PERCENT"
                 android:textSize="12sp" />
         </android.support.v7.widget.CardView>
 
