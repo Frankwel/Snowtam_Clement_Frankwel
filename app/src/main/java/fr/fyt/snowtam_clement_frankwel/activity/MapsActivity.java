@@ -21,12 +21,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
-import static java.lang.Double.parseDouble;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
