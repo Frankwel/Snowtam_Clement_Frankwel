@@ -35,6 +35,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static java.lang.Double.parseDouble;
 
 /**
@@ -301,35 +305,41 @@ public class MainActivity extends AppCompatActivity {
                                     if (response.contains("SNOWTAM")) {
                                         String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
                                         Log.i("resultatatatata", result);
-                                        final Snowtam snowtam = decodingSnowtam(codeList.get(finalI), result);
+                                        final Snowtam[] snowtam = {decodingSnowtam(codeList.get(finalI), result)};
 
                                         String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+codeList.get(finalI)+"&key=AIzaSyBxcMtkBIT2IU6VydoJB4yfoT-f3nSzY3Y";
 
-                                        final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
+                                        RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
                                         StringRequest stgRq = new StringRequest(Request.Method.GET, url,
 
                                                 new Response.Listener<String>() {
                                                     @Override
-                                                    public void onResponse(String response) {
+                                                    public void onResponse(String response) {/*
                                                         String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
                                                         String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
                                                         String airportName = response.substring(response.indexOf("short_name")+15,response.indexOf("types")-19);
-                                                        snowtam.setLat(parseDouble(lat));
-                                                        snowtam.setLng(parseDouble(lng));
-                                                        snowtam.setAirportName(airportName);
-                                                        rqtRq.stop();
+                                                        snowtam[0].setLat(parseDouble(lat));
+                                                        snowtam[0].setLng(parseDouble(lng));
+                                                        snowtam[0].setAirportName(airportName);*/
+
+                                                        try {
+                                                            snowtam[0] = completeSnowtam(response, snowtam[0]);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        //rqtRq.stop();
                                                     }
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                rqtRq.stop();
+                                                //rqtRq.stop();
                                             }
                                         });
                                         rqtRq.add(stgRq);
 
 
-                                        allSnowtam.add(snowtam);
+                                        allSnowtam.add(snowtam[0]);
 
                                         if(finalI == codeList.size()-1){
                                             progressDialog.cancel();
@@ -388,6 +398,27 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
         }
+    }
+
+
+    private Snowtam completeSnowtam(String req, Snowtam snowtam) throws JSONException {
+
+        Snowtam snowtam1 = snowtam;
+        JSONObject root = new JSONObject(req);
+        JSONArray results = root.getJSONArray("results");
+        JSONObject jsonObject;
+
+        jsonObject = results.getJSONObject(0);
+        double lat = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+        double lng = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+
+        String airportName = jsonObject.getJSONArray("address_components").getJSONObject(0).getString("long_name");
+
+        snowtam1.setLat(lat);
+        snowtam1.setLng(lng);
+        snowtam1.setAirportName(airportName);
+
+        return snowtam1;
     }
 
 }
