@@ -109,7 +109,7 @@ public class DecodingActivity extends AppCompatActivity {
             btnViewMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getContext(), MapActivity.class);
+                    Intent i = new Intent(getContext(), MapsActivity.class);
                     startActivity(i);
                 }
             });

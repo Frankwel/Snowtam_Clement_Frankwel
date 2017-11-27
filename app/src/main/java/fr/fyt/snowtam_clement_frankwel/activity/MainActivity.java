@@ -313,14 +313,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             if(internetAvailable()) {
-/*
-                for (int i = 0; i < codeList.size(); i++) {
-                    getSnowtam(codeList.get(i));
-                }*/
-                //TODO PRBLM IL N'A PAS LE TEMPS DE R2CUPERER LA REPONSE DE LA REQUETE HTTP DONC PAS DE SNOWTAM EN RETOUR
-                // TODO IL FAUT REUSSIR A FAIRE ATTENDRE LE PRGM POUR QUE LA METHODE GETSNOWTAM SE REALISE CORRECTEMENT
-//                Log.i("QUERYRESPONSEeeeeeeeeee", queryResponse.get(queryResponse.size()-1));
-
                 for (int i = 0; i < codeList.size(); i++) {
                     String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations=" + codeList.get(i) + "&qstring=&states=&ICAOonly=";
 
