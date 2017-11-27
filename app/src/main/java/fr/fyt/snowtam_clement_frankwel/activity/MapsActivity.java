@@ -97,8 +97,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void sendGeoPosition(String lat, String lng) {
        // this.lat = parseDouble(lat);
        // this.lng = parseDouble(lng);
-
-       // this.lat = 60.29183;
-       // this.lng = 5.2220173;
     }
 }
