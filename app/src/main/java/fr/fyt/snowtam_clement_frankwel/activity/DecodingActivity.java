@@ -110,6 +110,7 @@ public class DecodingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(getContext(), MapsActivity.class);
+                    i.putExtra("code", snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
                     startActivity(i);
                 }
             });

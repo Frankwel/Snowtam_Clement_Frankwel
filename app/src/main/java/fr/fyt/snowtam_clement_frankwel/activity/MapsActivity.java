@@ -1,8 +1,16 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
+
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -12,9 +20,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fr.fyt.snowtam_clement_frankwel.R;
 
+import static java.lang.Double.parseDouble;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private String code; //TODO TROUVER UN NOM PLUS EXPRESIF
+    private TextView txt;
+
+    private double lat;
+    private double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +39,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Bundle extras = getIntent().getExtras();
+        code = (String)getIntent().getSerializableExtra("code");
+        txt = (TextView)findViewById(R.id.mapTViewCode);
+
     }
 
 
@@ -40,9 +60,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        getGeoPosition();
+        LatLng airport = new LatLng(60.29183, 5.2220173);
+        mMap.addMarker(new MarkerOptions().position(airport).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
+    }
+
+    private void getGeoPosition() {
+
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+code+"&key=AIzaSyBxcMtkBIT2IU6VydoJB4yfoT-f3nSzY3Y";
+
+        final RequestQueue rqtRq = Volley.newRequestQueue(MapsActivity.this);
+
+        StringRequest stgRq = new StringRequest(Request.Method.GET, url,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                            String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
+                            String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
+                            txt.setText(lng);
+                            sendGeoPosition(lat, lng);
+                            rqtRq.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String result = "Something went wrong...";
+                error.printStackTrace();
+                rqtRq.stop();
+            }
+        });
+        rqtRq.add(stgRq);
+    }
+
+    private void sendGeoPosition(String lat, String lng) {
+       // this.lat = parseDouble(lat);
+       // this.lng = parseDouble(lng);
+
+       // this.lat = 60.29183;
+       // this.lng = 5.2220173;
     }
 }

@@ -165,11 +165,9 @@ public class MainActivity extends AppCompatActivity {
                             //test if the before last char is a blank space
                             if(elements[k+1].substring(elements[k+1].length()-2, elements[k+1].length()-1).equals(" ")){
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()-1) + "\n");
-                                snowtam.setKey(elements[k+1].substring(0, elements[k+1].length()-1));
                             }
                             else {
                                 snowtam.setResult(snowtam.getResult() + getString(R.string.location) + elements[k+1].substring(0, elements[k+1].length()) + "\n");
-                                snowtam.setKey(elements[k+1].substring(0, elements[k+1].length()));
                             }
                             break;
                         case "B":
@@ -300,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setMessage("Recherche des snowtams en cours ..."); // Setting Message
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-            progressDialog.setCancelable(false);
+            //progressDialog.setCancelable(false);
             progressDialog.show(); // Display Progress Dialog
 
         }
