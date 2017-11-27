@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+codeList.get(finalI)+"&key=AIzaSyBxcMtkBIT2IU6VydoJB4yfoT-f3nSzY3Y";
 
-                                        RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
+                                        final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
                                         StringRequest stgRq = new StringRequest(Request.Method.GET, url,
 
@@ -328,12 +328,12 @@ public class MainActivity extends AppCompatActivity {
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
                                                         }
-                                                        //rqtRq.stop();
+                                                        rqtRq.stop();
                                                     }
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                //rqtRq.stop();
+                                                rqtRq.stop();
                                             }
                                         });
                                         rqtRq.add(stgRq);
