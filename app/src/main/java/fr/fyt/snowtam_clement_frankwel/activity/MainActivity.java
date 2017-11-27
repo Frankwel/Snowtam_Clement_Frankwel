@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Loading loading = new Loading();
-                loading.execute();
+               Loading loading = new Loading();
+               loading.execute();
             }
         });
 
