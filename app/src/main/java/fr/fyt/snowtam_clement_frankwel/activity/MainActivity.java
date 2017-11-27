@@ -301,7 +301,34 @@ public class MainActivity extends AppCompatActivity {
                                     if (response.contains("SNOWTAM")) {
                                         String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
                                         Log.i("resultatatatata", result);
-                                        Snowtam snowtam = decodingSnowtam(codeList.get(finalI), result);
+                                        final Snowtam snowtam = decodingSnowtam(codeList.get(finalI), result);
+
+                                        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+codeList.get(finalI)+"&key=AIzaSyBxcMtkBIT2IU6VydoJB4yfoT-f3nSzY3Y";
+
+                                        final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
+
+                                        StringRequest stgRq = new StringRequest(Request.Method.GET, url,
+
+                                                new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
+                                                        String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
+                                                        String airportName = response.substring(response.indexOf("short_name")+15,response.indexOf("types")-19);
+                                                        snowtam.setLat(parseDouble(lat));
+                                                        snowtam.setLng(parseDouble(lng));
+                                                        snowtam.setAirportName(airportName);
+                                                        rqtRq.stop();
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                rqtRq.stop();
+                                            }
+                                        });
+                                        rqtRq.add(stgRq);
+
+
                                         allSnowtam.add(snowtam);
 
                                         if(finalI == codeList.size()-1){

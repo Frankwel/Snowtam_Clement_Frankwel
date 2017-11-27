@@ -56,7 +56,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
 
         txt = (TextView)findViewById(R.id.mapTViewCode);
-
     }
 
 
@@ -72,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        txt.setText("lat =" + String.valueOf(snowtam.getLat()) + " lng = " + String.valueOf(snowtam.getLng()));
 
         getGeoPosition();
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
@@ -92,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onResponse(String response) {
                             String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
                             String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
-                            txt.setText(lng);
+                            //txt.setText(lng);
                             sendGeoPosition(lat, lng);
                             rqtRq.stop();
                     }

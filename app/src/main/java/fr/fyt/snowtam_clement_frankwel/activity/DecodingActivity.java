@@ -96,7 +96,8 @@ public class DecodingActivity extends AppCompatActivity {
             tvSnowtam.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getCode());
 
             TextView tvCode = (TextView) rootView.findViewById(R.id.fvcTViewCode);
-            tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
+            //tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
+            tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getAirportName());
 
             TextView tvInformation = (TextView)rootView.findViewById(R.id.fvcTVInformations);
             tvInformation.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getResult());

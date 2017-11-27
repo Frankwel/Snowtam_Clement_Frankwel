@@ -6,6 +6,7 @@ package fr.fyt.snowtam_clement_frankwel.model;
 
 public class Snowtam {
 
+    String airportName;
     String key;
     String code;
     String result;
@@ -21,6 +22,7 @@ public class Snowtam {
 
 
     public Snowtam(String key, String code, String result) {
+        this.airportName = key;
         this.key = key;
         this.code = code;
         this.result = result;
@@ -67,5 +69,13 @@ public class Snowtam {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public String getAirportName() {
+        return airportName;
+    }
+
+    public void setAirportName(String airportName) {
+        this.airportName = airportName;
     }
 }
