@@ -1,21 +1,20 @@
 <resources>
     <string name="app_name">SnowTam</string>
-    <string name="homeIndication">Veuillez saisir un code d\'aeroport et valider avec la fèche pour qu\'il soit pris en compte.</string>
-    <string name="edit_text_airpot">code aeroport</string>
+    <string name="homeIndication">Please, select an airport code, then validate by using the arrow</string>
+    <string name="edit_text_airpot">Airport code</string>
     <string name="btn_search">Analyse</string>
-    <string name="empty_code">Aucune donnée saisie</string>
-    <string name="message_empty_code">Merci de  saisir un code afin qu\'il soit pris en compte</string>
-    <string name="bad_code">Wrong code</string>
-    <string name="message_bad_code">Veuillez saisir un code valide</string>
-    <string name="existed_code">Code existed</string>
-    <string name="message_existed_code">This code is already exist in the list bellow</string>
-    <string name="max_code">limite de code</string>
-    <string name="message_max_code">Vous pouvez rechercher 5 codes au maximum</string>
+    <string name="empty_code">No data entered</string>
+    <string name="bad_code">Incorrect code</string>
+    <string name="message_bad_code">Please enter a valid code</string>
+    <string name="existed_code">Existing Code</string>
+    <string name="message_existed_code">This airport is already on the track ;)</string>
+    <string name="max_code">Be careful, aiport codes are 4 Letter Codes</string>
+    <string name="message_max_code">You\'ve reached maximum airport capacity</string>
     <string name="ok">OK</string>
-    <string name="btn_view_map">View map</string>
-    <string name="btn_view_code">Voir le code</string>
+    <string name="btn_view_map">Map view</string>
+    <string name="btn_view_code">SnowTam view</string>
     <string name="section_format">Code: %1$d</string>
-    <string name="progress_query_snowtam">Recherche des snowtams en cours</string>
+    <string name="progress_query_snowtam">Search for snowtams in progress</string>
     <string name="january">January </string>
     <string name="february">February </string>
     <string name="march">March </string>
@@ -37,9 +36,10 @@
     <string name="mean_depth">Mean depth : </string>
     <string name="bracking_action">Breaking action : </string>
     <string name="taxiway">Taxiway : </string>
-    <string name="remark">Remarque : </string>
+    <string name="remark">"Remark : "</string>
     <string name="error_format_date">Error format date </string>
     <string name="error">Error </string>
     <string name="runway_unit">meters </string>
     <string name="title_activity_maps">Map</string>
+    <string name="message_empty_code">You\'ve to enter an airport code</string>
 </resources>
