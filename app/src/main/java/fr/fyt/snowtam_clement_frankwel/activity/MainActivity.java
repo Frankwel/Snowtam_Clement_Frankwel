@@ -144,18 +144,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * this function is used to decode snowtam
      */
-    private ArrayList<Snowtam> decodingSnowtam(List<String> snowtamList){
-        ArrayList<Snowtam> listToReturn = new ArrayList<>();
+    private Snowtam decodingSnowtam(String key, String oneSnowtam){
 
         Snowtam snowtam = new Snowtam();
         Converter converter = new Converter();
 
-        for(int i=0; i<snowtamList.size(); i++){
-            //snowtam.setKey(codeList.get(i));
-            snowtam.setCode(snowtamList.get(i));
+            snowtam.setKey(key);
+            snowtam.setCode(oneSnowtam);
             snowtam.setResult("");
 
-            String lines[] = snowtamList.get(i).split("\n");
+            String lines[] = oneSnowtam.split("\n");
             for (int j=0; j<lines.length; j++){
                 String elements[] = lines[j].split("\\)");
                 for(int k=0; k<elements.length-1; k++){
@@ -258,48 +256,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            listToReturn.add(snowtam);
-        }
-        return listToReturn;
+        return snowtam;
     }
 
-    /**
-     * this function make query to find snowtam online
-     * @param code
-     * @return snowTam code
-     */
-    private void getSnowtam(String code){
-        String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations="+code+"&qstring=&states=&ICAOonly=";
-
-        final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
-
-        StringRequest stgRq = new StringRequest(Request.Method.GET, url,
-
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("TETSTSTETETSTSTE", "SNOWSNSOSNSONSONS");
-                        if(response.contains("SNOWTAM")){
-                            String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
-                            Log.i("resultatatatata", result);
-                            sendSnowTam(result);
-                            rqtRq.stop();
-                        }else{
-                           final String result = "NoSnowTam";
-                            sendSnowTam(result);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String result = "Something went wrong...";
-                sendSnowTam(result);
-                error.printStackTrace();
-                rqtRq.stop();
-            }
-        });
-        rqtRq.add(stgRq);
-    }
 
     private void sendSnowTam(String result) {
         Log.i("RESULT", result);
@@ -353,16 +312,61 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            if(internetAvailable()){
-
-                for(int i=0; i<codeList.size(); i++){
+            if(internetAvailable()) {
+/*
+                for (int i = 0; i < codeList.size(); i++) {
                     getSnowtam(codeList.get(i));
-                }
+                }*/
                 //TODO PRBLM IL N'A PAS LE TEMPS DE R2CUPERER LA REPONSE DE LA REQUETE HTTP DONC PAS DE SNOWTAM EN RETOUR
                 // TODO IL FAUT REUSSIR A FAIRE ATTENDRE LE PRGM POUR QUE LA METHODE GETSNOWTAM SE REALISE CORRECTEMENT
 //                Log.i("QUERYRESPONSEeeeeeeeeee", queryResponse.get(queryResponse.size()-1));
 
-                allSnowtam = decodingSnowtam(queryResponse);
+                for (int i = 0; i < codeList.size(); i++) {
+                    String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations=" + codeList.get(i) + "&qstring=&states=&ICAOonly=";
+
+                    final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
+
+                    final int finalI = i;
+                    StringRequest stgRq = new StringRequest(Request.Method.GET, url,
+
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.i("TETSTSTETETSTSTE", "SNOWSNSOSNSONSONS");
+                                    if (response.contains("SNOWTAM")) {
+                                        String result = response.substring(response.indexOf("SNOWTAM"), response.indexOf(".)"));
+                                        Log.i("resultatatatata", result);
+                                        allSnowtam.add(decodingSnowtam(codeList.get(finalI), result));
+
+                                        rqtRq.stop();
+                                        if(finalI == codeList.size()-1){
+                                            progressDialog.cancel();
+                                            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+                                            Gson gson = new Gson();
+                                            String jsonSnowtam = gson.toJson(allSnowtam);
+
+                                            //send the list of codes to DecodingActivity
+                                            intent.putExtra("allSnowtam", jsonSnowtam);
+
+                                            startActivity(intent);
+                                        }
+                                    } else {
+                                        final String result = "NoSnowTam";
+                                        sendSnowTam(result);
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            String result = "Something went wrong...";
+                            sendSnowTam(result);
+                            error.printStackTrace();
+                            rqtRq.stop();
+                        }
+                    });
+                    rqtRq.add(stgRq);
+                }
             }
 
 
@@ -372,23 +376,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-/*
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-*/
-            progressDialog.cancel();
-            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
-
-            Gson gson = new Gson();
-            String jsonSnowtam = gson.toJson(allSnowtam);
-
-            //send the list of codes to DecodingActivity
-            intent.putExtra("allSnowtam", jsonSnowtam);
-
-            startActivity(intent);
 
         }
     }
