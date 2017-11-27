@@ -29,11 +29,7 @@ import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String code; //TODO TROUVER UN NOM PLUS EXPRESIF
     private TextView txt;
-
-    private double lat;
-    private double lng;
 
     private Snowtam snowtam;
 
@@ -46,9 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Bundle extras = getIntent().getExtras();
-        code = (String)getIntent().getSerializableExtra("code");
-        //getting the list of code
+        //getting snowtam
         Gson gson = new Gson();
         Type type = new TypeToken<Snowtam>(){}.getType();
         snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
@@ -72,42 +66,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         txt.setText("lat =" + String.valueOf(snowtam.getLat()) + " lng = " + String.valueOf(snowtam.getLng()));
 
-        getGeoPosition();
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
         mMap.addMarker(new MarkerOptions().position(airport).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
-    }
-
-    private void getGeoPosition() {
-
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+code+"&key=AIzaSyBxcMtkBIT2IU6VydoJB4yfoT-f3nSzY3Y";
-
-        final RequestQueue rqtRq = Volley.newRequestQueue(MapsActivity.this);
-
-        StringRequest stgRq = new StringRequest(Request.Method.GET, url,
-
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                            String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
-                            String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
-                            //txt.setText(lng);
-                            sendGeoPosition(lat, lng);
-                            rqtRq.stop();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String result = "Something went wrong...";
-                error.printStackTrace();
-                rqtRq.stop();
-            }
-        });
-        rqtRq.add(stgRq);
-    }
-
-    private void sendGeoPosition(String lat, String lng) {
-       // this.lat = parseDouble(lat);
-       // this.lng = parseDouble(lng);
     }
 }
