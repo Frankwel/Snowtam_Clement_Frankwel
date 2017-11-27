@@ -1,6 +1,7 @@
 package fr.fyt.snowtam_clement_frankwel.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> queryResponse;
 
-    CountDownTimer timer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +78,15 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ListViewAdapter(MainActivity.this, android.R.layout.simple_list_item_1, codeList);
         codeListView.setAdapter(adapter);
 
+
         ibValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+
                 if(editTextCode.getText().toString().trim().length()!=4){
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(getString(R.string.bad_code))
@@ -129,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                       // supress an element in the ListView
                         codeList.remove(item);
-                       adapter.notifyDataSetChanged();
-                       view.setAlpha(1);
+                        adapter.notifyDataSetChanged();
+                        view.setAlpha(1);
 
                         ibValidate.setVisibility(View.VISIBLE);
                         editTextCode.setVisibility(View.VISIBLE);
