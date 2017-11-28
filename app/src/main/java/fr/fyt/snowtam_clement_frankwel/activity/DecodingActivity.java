@@ -31,10 +31,6 @@ import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.Converter;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
-/**
- * Created by frank on 14/11/2017.
- * link usefull: https://www.androidhive.info/2016/05/android-build-intro-slider-app/
- */
 
 public class DecodingActivity extends AppCompatActivity {
 

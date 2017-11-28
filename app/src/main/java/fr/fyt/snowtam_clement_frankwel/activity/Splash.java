@@ -9,6 +9,7 @@ import fr.fyt.snowtam_clement_frankwel.R;
 
 public class Splash extends Activity {
 
+    //Time of the splashScreen
     private static int SPLASH_TIME_OUT = 2000;
 
     @Override
