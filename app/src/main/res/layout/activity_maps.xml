@@ -75,18 +75,6 @@
                 android:layout_height="match_parent"
                 android:background="#aaa" />
             </RadioGroup>
-
-
         </android.support.v7.widget.CardView>
-
-        <TextView
-            android:id="@+id/map_tv_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="TextView" />
-
     </LinearLayout>
-
 </RelativeLayout>

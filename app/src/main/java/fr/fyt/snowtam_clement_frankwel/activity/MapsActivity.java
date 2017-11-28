@@ -91,6 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(snowtam.getLat(), snowtam.getLng()))
                 .title(snowtam.getAirportName()));
-       // mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
+       //mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
+        mMap.setMinZoomPreference(10.0f);
+        mMap.setMaxZoomPreference(13.0f);
     }
 }
