@@ -87,12 +87,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(airport,12));
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(snowtam.getLat(), snowtam.getLng()))
                 .title(snowtam.getAirportName()));
-       //mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
-        mMap.setMinZoomPreference(10.0f);
+        mMap.setMinZoomPreference(11.0f);
         mMap.setMaxZoomPreference(13.0f);
     }
 }
