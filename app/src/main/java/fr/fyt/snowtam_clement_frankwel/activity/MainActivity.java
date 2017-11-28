@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = (Button)findViewById(R.id.btnSearch);
         codeListView = (ListView)findViewById(R.id.codeListView);
 
+
         codeList = new ArrayList<>();
         queryResponse = new ArrayList<>();
 
@@ -306,14 +307,7 @@ public class MainActivity extends AppCompatActivity {
                                         StringRequest stgRq = new StringRequest(Request.Method.GET, url,
                                                 new Response.Listener<String>() {
                                                     @Override
-                                                    public void onResponse(String response) {/*
-                                                        String lat = response.substring(response.indexOf("lat")+7, response.indexOf("lng")-18);
-                                                        String lng = response.substring(response.indexOf("lng")+7, response.indexOf("location_type")-29);
-                                                        String airportName = response.substring(response.indexOf("short_name")+15,response.indexOf("types")-19);
-                                                        snowtam[0].setLat(parseDouble(lat));
-                                                        snowtam[0].setLng(parseDouble(lng));
-                                                        snowtam[0].setAirportName(airportName);*/
-
+                                                    public void onResponse(String response) {
                                                         try {
                                                             snowtam[0] = completeSnowtam(response, snowtam[0]);
                                                         } catch (JSONException e) {
