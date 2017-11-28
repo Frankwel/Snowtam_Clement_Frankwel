@@ -42,8 +42,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static java.lang.Double.parseDouble;
-
 /**
  * usefull link: https://www.icao.int/safety/Pages/default.aspx
  */
@@ -57,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> codeList;
     ArrayList<String> queryResponse;
 
+    ArrayList<Snowtam> allSnowtam;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = (Button)findViewById(R.id.btnSearch);
         codeListView = (ListView)findViewById(R.id.codeListView);
 
+        allSnowtam = new ArrayList<>();
 
         codeList = new ArrayList<>();
         queryResponse = new ArrayList<>();
@@ -277,16 +278,8 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
             //progressDialog.setCancelable(false);
             progressDialog.show(); // Display Progress Dialog
-        }
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
             if(internetAvailable()) {
-                final ArrayList<Snowtam> allSnowtam = new ArrayList<>();
                 for (int i = 0; i < codeList.size(); i++) {
                     String url = "https://v4p4sz5ijk.execute-api.us-east-1.amazonaws.com/anbdata/states/notams/notams-list?api_key=bae907e0-ce02-11e7-81ce-1fabb66fbe08&format=json&type=&Qcode=&locations=" + codeList.get(i) + "&qstring=&states=&ICAOonly=";
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -323,33 +316,8 @@ public class MainActivity extends AppCompatActivity {
                                         });
                                         rqtRq.add(stgRq);
                                         allSnowtam.add(snowtam[0]);
-
-                                        if(finalI == codeList.size()-1){
-                                            progressDialog.cancel();
-                                            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
-
-                                            Gson gson = new Gson();
-                                            String jsonSnowtam = gson.toJson(allSnowtam);
-
-                                            //send the list of codes to DecodingActivity
-                                            intent.putExtra("allSnowtam", jsonSnowtam);
-
-                                            startActivity(intent);
-                                        }
                                     } else {
                                         allSnowtam.add(new Snowtam(codeList.get(finalI), "Pas de Snowtam", "L'aeroport " + codeList.get(finalI) + " ne possède pas de snowtam en cette période de l'année"));
-                                        if(finalI == codeList.size()-1){
-                                            progressDialog.cancel();
-                                            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
-
-                                            Gson gson = new Gson();
-                                            String jsonSnowtam = gson.toJson(allSnowtam);
-
-                                            //send the list of codes to DecodingActivity
-                                            intent.putExtra("allSnowtam", jsonSnowtam);
-
-                                            startActivity(intent);
-                                        }
                                     }
                                 }
                             }, new Response.ErrorListener() {
@@ -373,6 +341,20 @@ public class MainActivity extends AppCompatActivity {
                     queue.add(stringRequest);
                 }
             }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected Void doInBackground(Void... arg0) {
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -380,12 +362,21 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            progressDialog.cancel();
+            Intent intent = new Intent(MainActivity.this, DecodingActivity.class);
+
+            Gson gson = new Gson();
+            String jsonSnowtam = gson.toJson(allSnowtam);
+
+            //send the list of codes to DecodingActivity
+            intent.putExtra("allSnowtam", jsonSnowtam);
+
+            startActivity(intent);
         }
     }
 
 
     private Snowtam completeSnowtam(String req, Snowtam snowtam) throws JSONException {
-
         Snowtam snowtam1 = snowtam;
         JSONObject root = new JSONObject(req);
         JSONArray results = root.getJSONArray("results");
@@ -404,4 +395,15 @@ public class MainActivity extends AppCompatActivity {
         return snowtam1;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        allSnowtam = new ArrayList<>();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        allSnowtam = new ArrayList<>();
+    }
 }
