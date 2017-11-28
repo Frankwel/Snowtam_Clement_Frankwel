@@ -7,19 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.fyt.snowtam_clement_frankwel.R;
-import fr.fyt.snowtam_clement_frankwel.model.Converter;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
 
@@ -102,6 +93,14 @@ public class DecodingActivity extends AppCompatActivity {
             tvIndicator.setText(getArguments().getInt(ARG_SECTION_NUMBER)+1 + " / " + DecodingActivity.snowtamList.size());
 
             DecodingActivity.btnViewMap = (Button)rootView.findViewById(R.id.fvcBtnViewMap);
+
+            if(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getLat() == 0){
+                DecodingActivity.btnViewMap.setVisibility(View.INVISIBLE);
+            }
+            else {
+                DecodingActivity.btnViewMap.setVisibility(View.VISIBLE);
+            }
+
             //action for the button to view map
             btnViewMap.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +121,6 @@ public class DecodingActivity extends AppCompatActivity {
             return rootView;
         }
     }
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
