@@ -25,19 +25,19 @@ import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
 public class DecodingActivity extends AppCompatActivity {
 
-    ViewPager viewPager;
-    static Button btnViewMap;
+    ViewPager viewPager; //this ViewPager is used to accord slider
+    static Button btnViewMap; //Button used to view map of an airport
     SectionsPagerAdapter mSectionsPagerAdapter;
     static List<Snowtam> snowtamList = new ArrayList<Snowtam>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_decoding);
+        setContentView(R.layout.activity_decoding); //load initial content
 
-        //getting the list of code
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<Snowtam>>(){}.getType();
+        //getting the list of Snowtam
+        Gson gson = new Gson(); //Instance of Gson to get an object in extra
+        Type type = new TypeToken<List<Snowtam>>(){}.getType(); //instance of type List<Snowtam> to get List of snowtam to the last activity (MainActivity.class)
         snowtamList = gson.fromJson((String)getIntent().getSerializableExtra("allSnowtam"), type);
 
         // Create the adapter that will return a fragment for each of the three
@@ -77,30 +77,35 @@ public class DecodingActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            //rootView instance the current view (possibility to have 5 view max)
             View rootView = inflater.inflate(R.layout.fragment_view_code, container, false);
 
+            //tvSnowtam show the code of snowtam on view
             TextView tvSnowtam = (TextView)rootView.findViewById(R.id.fvcTVSnowtam);
             tvSnowtam.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getCode());
 
+            //tvCode show the name of airport on view
             TextView tvCode = (TextView) rootView.findViewById(R.id.fvcTViewCode);
-            //tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getKey());
             tvCode.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getAirportName());
 
+            //tvInformation show all information get in snowtam code
             TextView tvInformation = (TextView)rootView.findViewById(R.id.fvcTVInformations);
             tvInformation.setText(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getResult());
 
+            //tvIndicator show the number of the current page (view)
             TextView tvIndicator = (TextView)rootView.findViewById(R.id.fd_tv_indicator);
             tvIndicator.setText(getArguments().getInt(ARG_SECTION_NUMBER)+1 + " / " + DecodingActivity.snowtamList.size());
 
+            //initialize the btnViewMap: Button used to view map in the next activity
             DecodingActivity.btnViewMap = (Button)rootView.findViewById(R.id.fvcBtnViewMap);
 
+            //if airport don't have snowtam, make btnViewMap invisible, else live it visible
             if(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getLat() == 0){
                 DecodingActivity.btnViewMap.setVisibility(View.INVISIBLE);
             }
             else {
                 DecodingActivity.btnViewMap.setVisibility(View.VISIBLE);
             }
-
             //action for the button to view map
             btnViewMap.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,7 +122,6 @@ public class DecodingActivity extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-
             return rootView;
         }
     }
@@ -127,18 +131,15 @@ public class DecodingActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position);
         }
-
         @Override
         public int getCount() {
             // return the number of code
