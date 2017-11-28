@@ -27,7 +27,7 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private TextView txt;
+    private TextView airportCode;
     private Button switchMap;
     private boolean mapView = false;
 
@@ -53,7 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Type type = new TypeToken<Snowtam>(){}.getType();
         snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
 
-        txt = (TextView)findViewById(R.id.mapTViewCode);
+        airportCode = (TextView)findViewById(R.id.mapTViewCode);
+
+        airportCode.setText(snowtam.getAirportName());
 
         switchMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +85,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
-        txt.setText("lat =" + String.valueOf(snowtam.getLat()) + " lng = " + String.valueOf(snowtam.getLng()));
-
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
     }
 }
