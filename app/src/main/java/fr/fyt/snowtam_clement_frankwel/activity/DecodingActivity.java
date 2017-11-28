@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,7 +27,7 @@ import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 public class DecodingActivity extends AppCompatActivity {
 
     ViewPager viewPager; //this ViewPager is used to accord slider
-    static Button btnViewMap; //Button used to view map of an airport
+    static ImageButton btnViewMap; //Button used to view map of an airport
     SectionsPagerAdapter mSectionsPagerAdapter;
     static List<Snowtam> snowtamList = new ArrayList<Snowtam>();
 
@@ -97,7 +98,7 @@ public class DecodingActivity extends AppCompatActivity {
             tvIndicator.setText(getArguments().getInt(ARG_SECTION_NUMBER)+1 + " / " + DecodingActivity.snowtamList.size());
 
             //initialize the btnViewMap: Button used to view map in the next activity
-            DecodingActivity.btnViewMap = (Button)rootView.findViewById(R.id.fvcBtnViewMap);
+            DecodingActivity.btnViewMap = (ImageButton)rootView.findViewById(R.id.fvcBtnViewMap);
 
             //if airport don't have snowtam, make btnViewMap invisible, else live it visible
             if(DecodingActivity.snowtamList.get(getArguments().getInt(ARG_SECTION_NUMBER)).getLat() == 0){

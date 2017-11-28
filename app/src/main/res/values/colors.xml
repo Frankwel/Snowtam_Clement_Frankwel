@@ -5,4 +5,5 @@
     <color name="colorAccent">#a01041</color>
     <color name="colorBgEditTextCode">#bfb8b8</color>
     <color name="colorBgBtn">#bfb8b8</color>
+    <color name="colorBgBtnMap">#e1930c</color>
 </resources>
