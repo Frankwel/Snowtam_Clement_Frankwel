@@ -11,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -87,6 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(snowtam.getLat(), snowtam.getLng()))
+                .title(snowtam.getAirportName()));
+       // mMap.animateCamera(CameraUpdateFactory.zoomTo(8), 2000, null);
     }
 }
