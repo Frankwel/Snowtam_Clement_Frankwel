@@ -15,8 +15,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:text="@string/edit_text_airpot"
+            android:textColor="@android:color/holo_orange_dark"
             android:textSize="30sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/fvcCardViewCode"
