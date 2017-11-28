@@ -3,20 +3,14 @@ package fr.fyt.snowtam_clement_frankwel.activity;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,11 +19,19 @@ import java.lang.reflect.Type;
 import fr.fyt.snowtam_clement_frankwel.R;
 import fr.fyt.snowtam_clement_frankwel.model.Snowtam;
 
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private TextView txt;
+    private Button switchMap;
+    private boolean mapView = false;
+
+
 
     private Snowtam snowtam;
 
@@ -37,19 +39,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
+        switchMap = (Button)findViewById(R.id.switchMap);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //getting snowtam
+        //Get the snowtam
         Gson gson = new Gson();
         Type type = new TypeToken<Snowtam>(){}.getType();
         snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
 
         txt = (TextView)findViewById(R.id.mapTViewCode);
-    }
 
+        switchMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mapView){
+                    mMap.setMapType(MAP_TYPE_SATELLITE);
+                    mapView =true;
+                }
+                else{
+                    mMap.setMapType(MAP_TYPE_NORMAL);
+                    mapView=false;
+                }
+
+            }
+        });
+    }
 
     /**
      * Manipulates the map once available.
@@ -63,11 +83,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
         txt.setText("lat =" + String.valueOf(snowtam.getLat()) + " lng = " + String.valueOf(snowtam.getLng()));
 
         LatLng airport = new LatLng(snowtam.getLat(), snowtam.getLng());
-        mMap.addMarker(new MarkerOptions().position(airport).title("Marker in Sydney"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(airport));
     }
 }
