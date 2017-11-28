@@ -304,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
                                         final RequestQueue rqtRq = Volley.newRequestQueue(MainActivity.this);
 
                                         StringRequest stgRq = new StringRequest(Request.Method.GET, url,
-
                                                 new Response.Listener<String>() {
                                                     @Override
                                                     public void onResponse(String response) {/*
@@ -329,8 +328,6 @@ public class MainActivity extends AppCompatActivity {
                                             }
                                         });
                                         rqtRq.add(stgRq);
-
-
                                         allSnowtam.add(snowtam[0]);
 
                                         if(finalI == codeList.size()-1){
