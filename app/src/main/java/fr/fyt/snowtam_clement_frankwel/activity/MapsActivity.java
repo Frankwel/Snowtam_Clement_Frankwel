@@ -26,12 +26,8 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private TextView airportCode;
     private Button switchMap;
     private boolean mapView = false;
-
-
-
     private Snowtam snowtam;
 
     @Override
@@ -50,10 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Gson gson = new Gson();
         Type type = new TypeToken<Snowtam>(){}.getType();
         snowtam = gson.fromJson((String)getIntent().getSerializableExtra("snowtam"), type);
-
-        airportCode = (TextView)findViewById(R.id.mapTViewCode);
-
-        airportCode.setText(snowtam.getAirportName());
 
         switchMap.setOnClickListener(new View.OnClickListener() {
             @Override
